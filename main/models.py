@@ -29,7 +29,7 @@ class Test(models.Model):
         verbose_name_plural = "Testlar"
 
 class Question(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name="test")
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name="test", related_name='questions')
     question = models.CharField(max_length=400, verbose_name="savol")
     answer_a = models.CharField(max_length=250, verbose_name="a javob")
     answer_b = models.CharField(max_length=250, verbose_name="b javob")
