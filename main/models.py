@@ -18,6 +18,7 @@ class Test(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="kategoriya")
     title = models.CharField(max_length=250, verbose_name="sarlavha")
     max_attemps = models.PositiveIntegerField(verbose_name="maksimum harakatlar soni")
+    pass_percentage = models.PositiveIntegerField(default=60)
     start_date = models.DateTimeField(default=timezone.now, verbose_name="boshlanish sanasi")
     end_date = models.DateTimeField(default=(timezone.now()+timezone.timedelta(days=2)), verbose_name="tugatish sanasi")
     
@@ -43,3 +44,24 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Savol"
         verbose_name_plural = "Savollar"
+        
+class CheckTest(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    true_answers = models.PositiveIntegerField(default=0)
+    percentage = models.PositiveIntegerField(default=0)
+    is_passed = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"Ishlangan: {str(self.test.title)}"
+    
+class ChekQuestion(models.Model):
+    checktest = models.ForeignKey(CheckTest, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    given_answer = models.CharField(max_length=2)
+    true_answer = models.CharField(max_length=2)
+    is_true = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return str(self.is_true)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Test, Question
+from .models import Category, Test, Question, ChekQuestion, CheckTest
 
 class InlineQuestion(admin.TabularInline):
     model = Question
@@ -17,4 +17,4 @@ class QuestionAdmin(admin.ModelAdmin):
     model = Question
     list_display = ["test", "question", "true_answer"]
 
-admin.site.register([Category]) 
+admin.site.register([Category, CheckTest, ChekQuestion]) 
