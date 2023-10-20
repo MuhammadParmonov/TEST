@@ -114,20 +114,27 @@ def ready_to_test(request, test_id):
 @login_required(login_url="login")
 def test(request, test_id):
     test = Test.objects.get(id=test_id)
+    attemps = CheckTest.objects.filter(test=test, student=request.user).count()
     questions = Question.objects.filter(test=test)
+    if str(test.start_date) > str(datetime.now()):
+        return HttpResponse("Testni boshlanish vaqti kelmagan.")
+    elif str(test.end_date) < str(datetime.now()):
+        return HttpResponse("Test vaqti o'tib ketgan.")
+    elif attemps >= test.max_attemps:
+        return HttpResponse("Harakatlar soni tugagan.")
+    else:
+        if request.method == "POST":
+            checktest = CheckTest.objects.create(student=request.user, test=test)
+            for question in questions:
+                answer = request.POST.get(str(question.id))
+                true_answer = question.true_answer
+                ChekQuestion.objects.create(checktest=checktest, question=question, given_answer=answer, true_answer=true_answer)
     
-    if request.method == "POST":
-        checktest = CheckTest.objects.create(student=request.user, test=test)
-        for question in questions:
-            answer = request.POST.get(str(question.id))
-            true_answer = question.true_answer
-            ChekQuestion.objects.create(checktest=checktest, question=question, given_answer=answer, true_answer=true_answer)
- 
-        messages.info(request, "Testni yechib bo'ldingiz.")
-        checktest.save()
-        return redirect("check_test", checktest.id)
-                
-    return render(request, "test.html", {"test":test})
+            messages.info(request, "Testni yechib bo'ldingiz.")
+            checktest.save()
+            return redirect("check_test", checktest.id)
+                    
+        return render(request, "test.html", {"test":test})
 
 @login_required(login_url="login")
 def check_test(request, checktest_id):
@@ -137,3 +144,16 @@ def check_test(request, checktest_id):
         return render(request, "checktest.html", {"checktest":checktest, "checkquestions":checkquestions})
     else:
         raise Http404("Siz ushbu testni yechmagansiz")
+    
+@login_required(login_url="login")
+def my_results(request):
+    # tests = Test.objects.all()
+    check_tests = CheckTest.objects.filter(student=request.user)
+    tests = []
+    for checktest in check_tests:
+        print(checktest)
+        if not checktest.test in tests:
+            tests.append(checktest.test)
+            print(checktest.test)
+    print(tests)
+    return render(request, "my_results.html", {"tests": tests, "chekcktests": check_tests})

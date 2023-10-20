@@ -46,7 +46,7 @@ class Question(models.Model):
         verbose_name_plural = "Savollar"
         
 class CheckTest(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name="checktests")
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     true_answers = models.PositiveIntegerField(default=0)

@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse 
 from django.contrib.auth.models import User
 from django.contrib import messages
-
-# Create your views here.
+from django.contrib.auth.decorators import login_required
+from .forms import UserForm
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -63,3 +63,16 @@ def signup_view(request):
         else:
             pass
     return render(request, "users/signup.html")
+
+@login_required(login_url="login")
+def update_user(request):
+    user = request.user
+    form = UserForm(instance=user)
+    if request.method == "POST":
+        form = UserForm(instance=user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+        else:
+            return render(request, "users/user_update.html", {"form":form})                    
+    return render(request, "users/user_update.html", {"form":form})
