@@ -14,8 +14,9 @@
             <p> Tugash sanasi : {{test.end_date}} </p>
             <p> Maximum harakatlar : {{test.max_attemps}} </p>
             <p> Savollar soni : {{test.questions.all.count}} </p>
+            <p> Avtor : <a href="{% url 'profile' test.author.id %}">Avtor</a></p>
 
-            <a href="{% url "test" test.id %}" class="btn btn-primary">Testni Boshlash</a>
+            <a href="{% url 'test' test.id %}" class="btn btn-primary">Testni Boshlash</a>
             <a href="/" class="btn btn-warning">Qaytish</a>
         </div>
     </div>

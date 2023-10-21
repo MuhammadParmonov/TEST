@@ -18,7 +18,7 @@ Test: {{checktest.test.title}}
             {% endif %}
 
             <hr>
-            {% for q in chekquestions %}
+            {% for q in checkquestions %}
                 {% if q.is_true %}
                 <h5> {{forloop.counter}} {{q.question.question}}</h5>
                 <small> <strong>Note: {{q.given_answer}} belgilangan.</strong> </small>

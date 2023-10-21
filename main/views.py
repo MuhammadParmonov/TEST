@@ -5,10 +5,14 @@ from .forms import TestFrom, QuestionForm
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.utils.timezone import datetime
+from django.db.models import Q
 
 @login_required(login_url="login")
 def index(request):
     tests = Test.objects.all()
+    if request.method == "GET":
+        query = request.GET.get('q', "")
+        tests = Test.objects.filter(Q(title__icontains=query) | Q(category__name__icontains=query))
     return render(request, "index.html", {'tests': tests})
 
 @login_required(login_url="login")
@@ -154,6 +158,5 @@ def my_results(request):
         print(checktest)
         if not checktest.test in tests:
             tests.append(checktest.test)
-            print(checktest.test)
-    print(tests)
+            
     return render(request, "my_results.html", {"tests": tests, "chekcktests": check_tests})

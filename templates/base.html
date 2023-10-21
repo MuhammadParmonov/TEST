@@ -21,18 +21,24 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'my_tests' %}">My tests</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'my_results' %}">My Results</a>
-              </li>
+              {% comment %} <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{# url 'my_results' #}">My Results</a>
+              </li> {% endcomment %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'create_test' %}">Create Test</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'update' %}">Profil</a>
-              </li>
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile' request.user.id %}">Profil</a>
+                </li>
+              {% endif %}
             </ul>
           </div>
-          <div class="d_flex">
+          <div class="d-flex">
+            <form method="get" action="/" class="d-flex">
+              <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success me-2" type="submit">Search</button>
+            </form>
             {% if user.is_authenticated %}
                 <a class="btn btn-warning" href="{% url 'logout' %}">Logout</a>
             {% else %}
