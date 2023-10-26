@@ -82,9 +82,9 @@ def update_user(request):
             return render(request, "users/user_update.html", {"form":form, "profileForm":profileForm})                    
     return render(request, "users/user_update.html", {"form":form, "profileForm":profileForm})
 
-def profile(request, user_id):
+def profile(request, username):
     # user = User.objects.get(id=user_id)
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, username=username)
     if user.profile.anonym == False or user == request.user: 
         number_of_tests = Test.objects.filter(author=user).count()
         check_tests = CheckTest.objects.filter(student=user)

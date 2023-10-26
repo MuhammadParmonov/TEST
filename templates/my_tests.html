@@ -18,6 +18,7 @@
                          <a href="{% url 'update_test' test.id %}">Tahrirlash</a> |
                           <a href="{% url 'create_question' test.id %}">Savol Qo'shish</a> |
                          <a href="{% url 'detail_test' test.id %}">Ma'lumotlar</a>
+                         | <a href="{% url 'results' test.id %}">Yechganalr</a>
                     </div>
                     <span class="badge bg-primary rounded-pill">{{test.questions.all.count}}</span>
                     </li>

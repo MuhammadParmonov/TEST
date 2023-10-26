@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -115,7 +115,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
 
 # Default primary key field type
