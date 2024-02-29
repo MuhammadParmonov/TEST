@@ -9,6 +9,6 @@ urlpatterns = [
     path("signup/", signup_view, name="signup"),
     path("update/", update_user, name="update"),
     path("profile/<str:username>/", profile, name="profile"),
-    path("login/", LoginView.as_view(), name="login2"),
+    path("login/", LoginView.as_view(), name="login"),
     # path("logout2/", LogoutView.as_view(), name="logout2"),
 ]
